@@ -1,0 +1,278 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Sign up</h1><h3>If you are a Caterer and were emailed about having a free profile, click login, then click Forgot my password and use your email address to receive your new password.</h3>
+    </div>
+    <div class="col-sm-12" ng-if="signupSuccess">
+      <div class="alert alert-success">We sent you email to verify your address. Please check your email and click the link inside.  If you don't see it, check your junk mail or spam.</div>
+      <!-- Google Code for Register Conversion Page
+      <script type="text/javascript">
+        /* <![CDATA[ */
+        var google_conversion_id = 880536108;
+        var google_conversion_language = "en";
+        var google_conversion_format = "3";
+        var google_conversion_color = "ffffff";
+        var google_conversion_label = "k3O1CJqf7WoQrNTvowM";
+        var google_remarketing_only = false;
+        /* ]]> */
+      </script>
+      <script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+      </script>
+      <noscript>
+        <div style="display:inline;">
+          <img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/880536108/?label=k3O1CJqf7WoQrNTvowM&amp;guid=ON&amp;script=0"/>
+        </div>
+      </noscript>-->
+    </div>
+    <form class="form" name="form" ng-submit="vm.register(form)" ng-if="signupProcess" novalidate>
+      <div class="panel panel-default" style="padding: 10px; background-color: #e7e7e7 ">
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group" ng-class="{ 'has-success': form.firstname.$valid && vm.submitted,
+                                              'has-error': form.firstname.$invalid && vm.submitted }">
+            <label>First Name</label>
+
+            <input type="text" tabindex="1" name="firstname" class="form-control" ng-model="vm.user.firstname"
+                   required/>
+            <p class="help-block" ng-show="form.firstname.$error.required && vm.submitted">
+              A name is required
+            </p>
+          </div>
+          <div class="form-group" ng-class="{ 'has-success': form.password.$valid && vm.submitted,
+                                              'has-error': form.password.$invalid && vm.submitted }">
+            <label>Password</label>
+
+            <input type="password" tabindex="3" name="password" class="form-control" ng-model="vm.user.password"
+                   ng-minlength="3"
+                   required
+                   mongoose-error/>
+            <p class="help-block"
+               ng-show="(form.password.$error.minlength || form.password.$error.required) && vm.submitted">
+              Password must be at least 3 characters.
+            </p>
+            <p class="help-block" ng-show="form.password.$error.mongoose">
+              {{ vm.errors.password }}
+            </p>
+          </div>
+          <div class="form-group" ng-class="{ 'has-success': form.email.$valid && vm.submitted,
+                                              'has-error': form.email.$invalid && vm.submitted }">
+            <label>Email</label>
+
+            <input tooltip-placement="top" tabindex="5" uib-tooltip='Your email is your user name to login' type="email" name="email" class="form-control" ng-model="vm.user.email"
+                   required
+                   mongoose-error/>
+            <p class="help-block" ng-show="form.email.$error.email && vm.submitted">
+              Doesn't look like a valid email.
+            </p>
+            <p class="help-block" ng-show="form.email.$error.required && vm.submitted">
+              What's your email address?
+            </p>
+            <p class="help-block" ng-show="form.email.$error.mongoose">
+              {{ vm.errors.email }}
+            </p>
+          </div>
+          <div class="form-group">
+              <label><input tooltip-placement="top" tabindex="7" uib-tooltip='If you are a caterer please check this box to register' type="checkbox" name="role" ng-model="vm.user.role"/> I'm a Caterer</label>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group" ng-class="{ 'has-success': form.lastname.$valid && vm.submitted,
+                                                'has-error': form.lastname.$invalid && vm.submitted }">
+            <label>Last Name</label>
+
+            <input type="text" tabindex="2" name="lastname" class="form-control" ng-model="vm.user.lastname"
+                   required/>
+            <p class="help-block" ng-show="form.lastname.$error.required && vm.submitted">
+              A name is required
+            </p>
+          </div>
+          <div class="form-group" ng-class="{ 'has-success': form.confirmPassword.$valid && vm.submitted,
+                                              'has-error': form.confirmPassword.$invalid && vm.submitted }">
+            <label>Confirm Password</label>
+            <input type="password" tabindex="4" name="confirmPassword" class="form-control" ng-model="vm.user.confirmPassword"
+                   match="vm.user.password"
+                   ng-minlength="3" required/>
+            <p class="help-block"
+               ng-show="form.confirmPassword.$error.match && vm.submitted">
+              Passwords must match.
+            </p>
+          </div>
+
+          <div class="form-group" ng-class="{ 'has-success': form.confirmemail.$valid && vm.submitted,
+                                              'has-error': form.confirmemail.$invalid && vm.submitted }">
+            <label>Confirm Email</label>
+
+            <input type="email" tabindex="6" name="confirmemail" class="form-control" ng-model="vm.user.confirmemail"
+                   required
+                   mongoose-error/>
+            <p class="help-block" ng-show="form.confirmemail.$error.confirmemail && vm.submitted">
+              Email must match.
+            </p>
+            <p class="help-block" ng-show="form.confirmemail.$error.required && vm.submitted">
+              Repeat your email.
+            </p>
+            <p class="help-block" ng-show="form.confirmemail.$error.mongoose">
+              {{ vm.errors.confirmemail }}
+            </p>
+          </div>
+          <div class="form-group" ng-class="{ 'has-success': form.userphone.$valid && vm.submitted,
+                                                'has-error': form.userphone.$invalid && vm.submitted }">
+            <label>User Phone Number</label>
+
+            <input type="text" tabindex="2" uib-tooltip='We need a contact number in case there is a problem with your order' name="userphone" class="form-control" ng-model="vm.user.userphone"
+                   required/>
+            <p class="help-block" ng-show="form.userphone.$error.required && vm.submitted">
+              A Contact Phone Number is required so we can contact you if there is a problem with your order
+            </p>
+          </div>
+        </div>
+      </div>
+      </div>
+      <h2 ng-if="vm.user.role">Additional Company Information</h2>
+      <div class="panel panel-default" style="padding: 10px; background-color: #e7e7e7 " ng-if="vm.user.role">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group" ng-class="{ 'has-success': form.companyName.$valid && vm.submitted, 'has-error': form.companyName.$invalid && vm.submitted }" ng-if="vm.user.role">
+              <label>Company Name</label>
+              <input type="text" tabindex="8" name="companyName" class="form-control" ng-model="vm.user.companyName" required />
+              <p class="help-block" ng-show="form.companyName.$error.required && vm.submitted">A company name is required</p>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group" ng-class="{ 'has-success': form.website.$valid && vm.submitted, 'has-error': form.website.$invalid && vm.submitted }" ng-if="vm.user.role">
+              <label>Website</label>
+              <input type="text" tabindex="9" name="website" class="form-control" ng-model="vm.user.website" required />
+              <p class="help-block" ng-show="form.website.$error.required && vm.submitted">A company website is required</p>
+            </div>
+          </div>
+          <div class="col-sm-12">
+            <div class="form-group" ng-if="vm.user.role">
+              <label>Description</label>
+              <input tooltip-placement="top" tabindex="10" uib-tooltip='A short description about your business' type="text" name="description" class="form-control" ng-model="vm.user.description"  />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group" ng-if="vm.user.role">
+              <label>Location</label>
+              <input tooltip-placement="top" tabindex="11" uib-tooltip='Start to type in your address and google should autofill the rest.  If it does not find the correct one, call us so we can fix it.' type="text" name="location" class="form-control" data-location="location" ng-model="vm.user.location"/>
+              <div class="form-group has-error" ng-if="vm.addressValidationError">
+                {{ vm.addressValidationError }}
+              </div>
+            </div>
+           </div>
+          <div class="col-sm-6">
+            <div class="form-group" ng-class="{ 'has-success': form.phone.$valid && vm.submitted, 'has-error': form.phone.$invalid && vm.submitted }" ng-if="vm.user.role">
+              <label>Main Phone Number</label>
+              <input type="text" name="phone" tabindex="12" class="form-control" ng-model="vm.user.phone" required />
+              <p class="help-block" ng-show="form.phone.$error.required && vm.submitted">A company phone is required</p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group" ng-class="{ 'has-success': form.contact_email.$valid && vm.submitted, 'has-error': form.contact_email.$invalid && vm.submitted }" ng-if="vm.user.role">
+              <label>Admin Email</label>
+              <input tooltip-placement="top" tabindex="13" uib-tooltip='This is the email for the Administrator who will be the main contact for Catering Ninja to work with.  It can be the same as the user email to login.' type="text" name="contact_email" class="form-control" ng-model="vm.user.contact_email" required />
+              <p class="help-block" ng-show="form.contact_email.$error.required && vm.submitted">A company Admin email is required</p>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group" ng-class="{ 'has-success': form.contact_phone.$valid && vm.submitted, 'has-error': form.contact_phone.$invalid && vm.submitted }" ng-if="vm.user.role">
+              <label>Admin Phone</label>
+              <input tooltip-placement="top" tabindex="14" uib-tooltip='The phone number Catering Ninja should use to contact you' type="text" name="contact_phone" class="form-control" ng-model="vm.user.contact_phone" required />
+              <p class="help-block" ng-show="form.contact_phone.$error.required && vm.submitted">An Admin Phone is required</p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="form-group" ng-class="{ 'has-success': form.minprice.$valid && vm.submitted, 'has-error': form.minprice.$invalid && vm.submitted }" ng-if="vm.user.role">
+              <label>Min Price per person</label>
+              <input tooltip-placement="top" tabindex="15" uib-tooltip='This is the minimum priced events that you want to view, this filters events you see.' type="text" name="minprice" class="form-control" ng-model="vm.user.minprice" required />
+              <p class="help-block" ng-show="form.minprice.$error.required && vm.submitted">A minimum price is required</p>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group" ng-if="vm.user.role">
+              <label>Have Vegetarian Options</label>
+              <input tooltip-placement="top" tabindex="16" uib-tooltip='Only select this option if you offer Vegetarian meals.'  type="checkbox" name="veganOffers" class="form-control" ng-model="vm.user.veganOffers" />
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group" ng-if="vm.user.role">
+              <label>Radius in Miles for Catering Events</label>
+              <input tooltip-placement="top" tabindex="17" uib-tooltip='This is available radius that you want to view, this filters events you see.'  type="number" name="radius" class="form-control" ng-model="vm.user.radius" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <label tooltip-placement="top" uib-tooltip='Enter the contact that customers can reach out to with questions'  ng-if="vm.user.role">Customer Contact Information</label>
+      <div style="border: 3px solid transparent; padding: 10px; border-radius: 4px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); border-color: #ddd;" ng-if="vm.user.role">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group" ng-if="vm.user.role">
+              <label tooltip-placement="top" uib-tooltip='Enter the contact that customers can reach out to with questions' >First Name</label>
+              <input type="text" tabindex="17" name="ninja_firstname" class="form-control" ng-model="vm.user.ninja_firstname"  />
+            </div>
+            <div class="form-group" ng-if="vm.user.role">
+              <label>Contact Email</label>
+              <input tooltip-placement="top" tabindex="19" uib-tooltip='Enter the email that customers can reach out to with questions'  type="text" name="ninja_email" class="form-control" ng-model="vm.user.ninja_email"  />
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group" ng-if="vm.user.role">
+              <label>Last Name</label>
+              <input type="text" name="ninja_lastname" tabindex="18" class="form-control" ng-model="vm.user.ninja_lastname" />
+            </div>
+            <div class="form-group" ng-if="vm.user.role">
+              <label>Contact Phone</label>
+              <input tooltip-placement="top" tabindex="20" uib-tooltip='Enter the contact phone that customers can reach out to with questions' type="text" name="ninja_phone" class="form-control" ng-model="vm.user.ninja_phone" />
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-sm-6">
+          <div class="form-group" ng-if="vm.user.role">
+            <label tooltip-placement="top" uib-tooltip='Enter one or more food types that represent your food.' >Select Food types</label>
+            <div class="panel panel-default" style="padding: 10px; background-color: #e7e7e7 ">
+              <div class="checkbox" ng-repeat="type in foodTypes">
+                <label>
+                  <input type="checkbox" checklist-model="vm.user.foodTypes" checklist-value="type._id" checked="{{type.checked}}"> {{type.name}}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="form-group" ng-if="vm.user.role">
+            <label tooltip-placement="top" uib-tooltip='Enter one or more service types that represent what you provide.' >Select Service types</label>
+            <div class="panel panel-default" style="padding: 10px; background-color: #e7e7e7 ">
+              <div class="checkbox" ng-repeat="type in serviceTypes">
+                <label>
+                  <input type="checkbox" checklist-model="vm.user.serviceTypes" checklist-value="type._id" checked="{{type.checked}}"> {{type.name}}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+            <button class="btn btn-primary btn-lg btn-register" type="submit">
+              Register
+            </button>
+            <a ui-sref="login" style="margin-left: 40px;">
+              Go to Login Page
+            </a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<hr>
+
+

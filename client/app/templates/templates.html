@@ -1,0 +1,42 @@
+<div class="panel panel-default" style="padding: 10px;">
+  <div class="row">
+    <div class="col-sm-4">
+      <div class="from-group">
+        <p tooltip-placement="top" uib-tooltip='To save time you can create pre defined offer templates that you can select here.'>Select Offer Template</p>
+        <select class="form-control" placeholder="Select Offer Template" name="templateSelected" ng-options="tpl.name for tpl in templates track by tpl._id" ng-change="tc.populateTpl()" ng-model="templateSelected">
+          <option selected>Select Offer Template</option>
+        </select>
+      </div>
+    </div>
+    <div class="col-sm-8">
+      <div class="from-group">
+        <p tooltip-placement="top" uib-tooltip='If you do not select an offer template you need to enter in your offer here'>Or enter new offer description</p>
+        <textarea class="form-control" placeholder="Offer Description" ng-model="tfm.description" ng-blur="tc.populateToOffer()"></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-4">
+    </div>
+    <div class="col-sm-8">
+      <div class="from-group">
+        <br />
+        <p tooltip-placement="top" uib-tooltip='Best Practice is to save offer templates so you dont have to enter them each time.  Give it a good name so you will recognize it on the template list.'>If you want to save this offer as template, please enter name first</p>
+        <div ng-show="tc.saved" class="alert alert-success animate-show" style="margin-top: 5px; padding: 5px;">Template is saved.</div>
+        <div class="row">
+          <div class="col-sm-8">
+            <div class="from-group">
+              <input type="text" placeholder="Template Name" class="form-control" ng-model="tfm.name" ng-blur="tc.check()" />
+            </div>
+          </div>
+          <div class="col-sm-4">
+            <div class="from-group">
+              <button style="width: 100%" class="btn btn-default" ng-disabled="checkForExistence" ng-click="tc.createTpl(tfm)">Save As Template</button>
+              <small class="muted" ng-if="checkForExistance">Please select a name for your template</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

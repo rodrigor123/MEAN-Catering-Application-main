@@ -1,0 +1,31 @@
+#navbar-main .btn-primary,
+.navbar-nav.navbar-right:last-child.menu,
+.navbar-nav.navbar-right.menu {
+  margin: 18px 15px 0 15px;
+}
+
+.navbar-main {
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f6f6f6+47,ededed+100;White+3D+%231 */
+  background: rgb(255,255,255); /* Old browsers */
+  background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(237,237,237,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(237,237,237,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+
+  &.navbar-default .navbar-nav>li>a,
+  &.navbar-default .navbar-nav>li>a,
+  &.navbar-default .navbar-text {
+    padding-top: 25px;
+    padding-bottom: 25px;
+  }
+
+  .navbar-header {
+    height: 70px;
+
+    .navbar-brand {
+      padding: 10px 15px 0 15px;
+    }
+  }
+}
+
+

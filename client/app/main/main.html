@@ -1,0 +1,20 @@
+<header class="hero-unit" id="banner">
+  <div class="container">
+    <h2>ALERT PLEASE READ</h2>
+    <h3>Our Servers went down and unfortunately we lost all data from Dec 17 forward.  If you registered or entered an event or offer after that date, you will need to register and or enter that data again.  We are very sorry and have taken steps to ensure this doesn't happen again.</h3>
+  </div>
+</header>
+<div class="container">
+	<script type="text/ng-template" id="myModalContent.html">        
+    	<div uib-alert class="alert alert-danger password-alert" role="alert" ng-if="$ctrl.alert" dismiss-on-timeout="2000">Password is wrong.</div>
+        <div class="modal-body" id="modal-body">
+        	<h4>Please input password!</h4>
+            <input type="password" class="form-control" id="password" ng-model="$ctrl.pass" />
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary center-block" type="button" ng-click="$ctrl.ok()">OK</button>
+        </div>
+    </script>
+</div>
+
+

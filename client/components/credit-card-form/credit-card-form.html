@@ -1,0 +1,25 @@
+<form stripe-form="stripeCallback" name="checkoutForm" style="width: 500px;">
+  <div class="form-group">
+    <input class="form-control" type="text" ng-model="number" placeholder="Card Number" payments-format="card" payments-validate="card" name="card" />
+  </div>
+  <div class="form-group">
+    <input class="form-control" ng-model="expiry" type="text" placeholder="Expiration" payments-format="expiry" payments-validate="expiry" name="expiry" />
+  </div>
+  <div class="form-group">
+    <input class="form-control" ng-model="cvc" type="text" placeholder="CVC" payments-format="cvc" payments-validate="cvc" name="cvc" />
+  </div>
+  <div class="form-group">
+    <button class="btn btn-primary" type="submit">Submit</button>
+  </div>
+  <div class="form-group" ng-if="vm.ccupdateSuccess">
+    <div class="alert alert-success" role="alert">
+      The Credit Card was updated .
+    </div>
+  </div>
+  <div class="form-group has-error" ng-if="vm.error">
+    <div class="alert alert-info" role="alert">
+      {{ vm.error }}
+    </div>
+  </div>
+</form>
+

@@ -1,0 +1,286 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Profile</h1>
+    </div>
+    <div class="col-sm-12">
+      <uib-tabset active="active">
+        <uib-tab index="0" heading="Payments">
+          <br />
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <table class="table table-condensed">
+                <thead>
+                <tr>
+                  <th>Status</th>
+                  <th>Date</th>
+                  <th>Total</th>
+                  <th>Event</th>
+                  <th>Caterer</th>
+                  <th>Invoice</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="event in events">
+                  <td>
+                    <span class="label label-info">{{event.paymentStatus}}</span>
+                  </td>
+                  <td>
+                    <span ng-if="event.paymentStatus == 'paid'">{{event.paymentPaidDate | date: "longDate" }}</span>
+                    <span ng-if="event.paymentStatus == 'hold'">{{event.paymentHoldDate | date: "longDate" }}</span>
+                  </td>
+                  <td>{{event.offer.invoice.total}}</td>
+                  <td>{{event.name}}</td>
+                  <td>{{event.offer.catererName}}</td>
+                  <td><a class="btn btn-xs btn-success" ng-click="customerProfile.showInvoice($event, event)">Invoice</a></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="row" ng-if="isInvoiceMode">
+            <div class="col-sm-12">
+              <header>Invoice</header>
+              <article>
+                <table class="table col-sm-12">
+                  <thead>
+                    <tr class="active">
+                      <th class="col-sm-1">#</th>
+                      <th class="col-sm-5">Event Description</th>
+                      <th class="col-sm-2"># People</th>
+                      <th class="col-sm-2">$ Per Person</th>
+                      <th class="col-sm-2">$ Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><div uib-tooltip="{{eventForInvoice.offer.invoice._id}}" style="overflow: hidden; width: 50px; white-space: nowrap; text-overflow: ellipsis;">{{eventForInvoice.offer.invoice._id}}</div></td>
+                      <td>{{eventForInvoice.description}}</td>
+                      <td>{{eventForInvoice.people.toFixed(2)}}</td>
+                      <td>{{eventForInvoice.pricePerPerson.toFixed(2)}}</td>
+                      <td>{{(eventForInvoice.people * eventForInvoice.pricePerPerson).toFixed(2)}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <section class="col-sm-4 col-sm-offset-8">
+                  <table class="table">
+                    <tbody>
+                      <tr ng-if="eventForInvoice.offer.counter">
+                        <td>Counter</td>
+                        <td>{{eventForInvoice.offer.counter.toFixed(2)}}</td>
+                      </tr>
+                      <tr>
+                        <td>Sub Total</td>
+                        <td>{{eventForInvoice.offer.invoice.service.toFixed(2)}}</td>
+                      </tr>
+                      <tr>
+                        <td>Sales Tax ({{((eventForInvoice.offer.invoice.tax/eventForInvoice.offer.invoice.service) * 100).toFixed(2)}}%)</td>
+                        <td>{{eventForInvoice.offer.invoice.tax.toFixed(2)}}</td>
+                      </tr>
+                      <tr ng-if="eventForInvoice.offer.invoice.tip">
+                        <td>Tip</td>
+                        <td>{{eventForInvoice.offer.invoice.tip.toFixed(2)}}</td>
+                      </tr>
+                      <tr>
+                        <td><b>Total</b></td>
+                        <td><b>{{eventForInvoice.offer.invoice.total.toFixed(2)}}</b></td>
+                      </tr>
+                      <tr class="success" ng-if="customerProfile.user.role == 'user'">
+                        <td>Charged to Credit Card</td>
+                        <td>{{eventForInvoice.offer.invoice.total.toFixed(2)}}</td>
+                      </tr>
+                      <tr class="danger" ng-if="eventForInvoice.offer.invoice.refund">
+                        <td>Refund</td>
+                        <td>-{{eventForInvoice.offer.invoice.refund.toFixed(2)}}</td>
+                      </tr>
+                      <tr class="warning" ng-if="!eventForInvoice.offer.invoice.refund && eventForInvoice.offer.invoice.adjustment.client && customerProfile.user.role == 'user'">
+                        <td>Partial Refund</td>
+                        <td>-{{eventForInvoice.offer.invoice.adjustment.client.toFixed(2)}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </section>
+              </article>
+            </div>
+          </div>
+        </uib-tab>
+        <uib-tab index="1" heading="Profile">
+          <br />
+          <form class="form" name="profileForm" novalidate>
+
+            <div class="form-group" ng-class="{ 'has-success': profileForm.firstname.$valid && customerProfile.submitted,
+                                                'has-error': profileForm.firstname.$invalid && customerProfile.submitted }">
+              <label>First Name</label>
+
+              <input type="text" name="firstname" class="form-control" ng-model="customerProfile.user.firstname"
+                     required/>
+              <p class="help-block" ng-show="profileForm.firstname.$error.required && customerProfile.submitted">
+                A name is required
+              </p>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-success': profileForm.lastname.$valid && customerProfile.submitted,
+                                                'has-error': profileForm.lastname.$invalid && customerProfile.submitted }">
+              <label>Last Name</label>
+
+              <input type="text" name="lastname" class="form-control" ng-model="customerProfile.user.lastname"
+                     required/>
+              <p class="help-block" ng-show="profileForm.lastname.$error.required && customerProfile.submitted">
+                A name is required
+              </p>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-success': profileForm.userphone.$valid && customerProfile.submitted,
+                                                'has-error': profileForm.userphone.$invalid && customerProfile.submitted }">
+              <label>Last Name</label>
+
+              <input type="text" name="userphone" class="form-control" ng-model="customerProfile.user.userphone"
+                     required/>
+              <p class="help-block" ng-show="profileForm.userphone.$error.required && customerProfile.submitted">
+                A phone number is required
+              </p>
+            </div>
+
+            <div class="form-group" ng-class="{ 'has-success': profileForm.email.$valid && customerProfile.submitted,
+                                                'has-error': profileForm.email.$invalid && customerProfile.submitted }">
+              <label>Email</label>
+
+              <input type="email" name="email" class="form-control" ng-model="customerProfile.user.email"
+                     required
+                     mongoose-error/>
+              <p class="help-block" ng-show="profileForm.email.$error.email && customerProfile.submitted">
+                Doesn't look like a valid email.
+              </p>
+              <p class="help-block" ng-show="profileForm.email.$error.required && customerProfile.submitted">
+                What's your email address?
+              </p>
+              <p class="help-block" ng-show="profileForm.email.$error.mongoose">
+                {{ customerProfile.errors.email }}
+              </p>
+            </div>
+            <div class="alert alert-success" role="alert" ng-if="customerProfile.saved">Account information is successfully saved</div>
+            <div>
+              <button class="btn btn-primary btn-lg btn-register" ng-click="customerProfile.save(profileForm)" type="submit">
+                Save Changes
+              </button>
+            </div>
+
+          </form>
+
+          <!-- <br>
+          <div style="margin-top:50px;" ng-if="customerProfile.user.payableAccountId">
+            <p>If you need to change or update your credit card, please click the button below.</p>
+            <button class="btn btn-primary btn-lg btn-register" stripe-checkout="customerProfile.doCheckout"
+            data-key="pk_test_0EFB2Y1WvIYGIIUsAQJ42DVD"
+            data-name="Catering Ninja"
+            data-description="Please Verify your Credit Card"
+            data-amount="1000">
+              Edit Credit Card
+            </button>
+          </div> -->
+        </uib-tab>
+        <uib-tab index="2" heading="Change password">
+          <br />
+          <form class="form" name="form" ng-submit="customerProfile.changePassword(form)" novalidate>
+
+            <div class="form-group">
+              <label>Current Password</label>
+
+              <input type="password" name="password" class="form-control" ng-model="customerProfile.user.oldPassword"
+                     mongoose-error/>
+              <p class="help-block" ng-show="form.password.$error.mongoose">
+                {{ customerProfile.errors.other }}
+              </p>
+            </div>
+
+            <div class="form-group">
+              <label>New Password</label>
+
+              <input type="password" name="newPassword" class="form-control" ng-model="customerProfile.user.newPassword"
+                     ng-minlength="3"
+                     required/>
+              <p class="help-block"
+                 ng-show="(form.newPassword.$error.minlength || form.newPassword.$error.required) && (form.newPassword.$dirty || customerProfile.submitted)">
+                Password must be at least 3 characters.
+              </p>
+            </div>
+
+            <div class="form-group">
+              <label>Confirm New Password</label>
+
+              <input type="password" name="confirmPassword" class="form-control" ng-model="customerProfile.user.confirmPassword"
+                     match="customerProfile.user.newPassword"
+                     ng-minlength="3"
+                     required=""/>
+              <p class="help-block"
+                 ng-show="form.confirmPassword.$error.match && customerProfile.submitted">
+                Passwords must match.
+              </p>
+
+            </div>
+
+            <p class="help-block"> {{ customerProfile.message }} </p>
+            <div class="alert alert-success" role="alert" ng-if="customerProfile.saved">Account information is successfully saved</div>
+            <button class="btn btn-lg btn-primary" type="submit">Save changes</button>
+          </form>
+        </uib-tab>
+        <uib-tab index="3" heading="Update Credit Card Card" ng-if="customerProfile.user.payableAccountId">
+          <div style="padding:50px;">
+            <p>If you need to change or update your credit card information, please use this form to do so.</p>
+            <form stripe:form="updateCustomer" name="ccForm" novalidate>
+              <div class="form-group" style="width:25%">
+                <label for="card-number">Card Number</label>
+                <input type="text" class="form-control" id="cardNumber" cc-number cc-eager-type cc-format="card" cc-validate="card" maxlength="19" size="19" name="ccNumber" ng-model="card.number" data-stripe="number" ng-required="true">
+              </div>
+              <div class="form-group" style="width:10%">
+                <label for="cvc">CVC</label>
+                <input type="text" size="6" class="form-control" id="cvc" cc-cvc cc-type="ccForm.ccNumber.$ccType" name="ccCvc" ng-model="card.cvc" data-stripe="cvc" ng-required="true">
+              </div>
+              <div class="form-group" style="width:35%">
+                <label for="card-number">Expiration</label>
+                <div class="row" cc-exp>
+                  <div class="col-xs-3">
+                    <input placeholder="MM" type="text" size="4" class="form-control" cc-exp-month name="ccExpMonth" ng-model="card.expiration.month" data-stripe="exp-month" ng-required="true">
+                  </div>
+                  <div class="col-xs-3">
+                    <input placeholder="YY" type="text" size="4" class="form-control" cc-exp-year name="ccExpYear" ng-model="card.expiration.year" data-stripe="exp-year" ng-required="true">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <button class="btn btn-primary" type="submit">Submit</button>
+              </div>
+            </form>
+            <p ng-show="ccForm.ccNumber.$invalid && ccForm.ccNumber.$ccEagerType">
+              Looks like you're typing a {{ccForm.ccNumber.$ccEagerType}} number!
+            </p>
+            <p ng-show="ccForm.ccNumber.$valid && ccForm.ccNumber.$ccType">
+              Yes, that looks like a valid {{ccForm.ccNumber.$ccType}} number!
+            </p>
+            <p ng-show="ccForm.ccNumber.$error.required">
+              You must enter a credit card number!
+            </p>
+          </div>
+
+          <!-- <div style="padding:50px;">
+            <p>If you need to change or update your credit card, please use this form to do so.</p>
+              <credit-card-form verifier="false" ccupdate="true" user="customerProfile.user" event=""></credit-card-form>
+          </div> -->
+        </uib-tab>
+      </uib-tabset>
+    </div>
+
+    <div class="form-group" ng-if="customerProfile.ccupdateSuccess">
+      <div class="alert alert-success" role="alert">
+        The Credit Card was updated .
+      </div>
+    </div>
+    <div class="form-group has-error" ng-if="customerProfile.error">
+      <div class="alert alert-info" role="alert">
+        {{ customerProfile.error }}
+      </div>
+    </div>
+
+  </div>
+  <hr>
+</div>

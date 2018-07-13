@@ -1,0 +1,47 @@
+<div class="navbar navbar-default navbar-static-top navbar-main" ng-controller="NavbarController">
+  <div class="container">
+    <div class="navbar-header">
+      <button class="navbar-toggle" type="button" ng-click="nav.isCollapsed = !nav.isCollapsed">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a href="http://www.cateringninja.com" class="navbar-brand"><img src="/assets/images/logo_flat.png" /></a>
+      <!--<a href="/" class="navbar-brand">Catering Ninja</a>-->
+    </div>
+    <div uib-collapse="nav.isCollapsed" class="navbar-collapse collapse" id="navbar-main">
+      <ul class="nav navbar-nav">
+        <li ng-repeat="item in nav.menu" ui-sref-active="active">
+            <a ui-sref="{{item.state}}">{{item.title}}</a>
+        </li>
+        <li ng-show="nav.getCurrentUser().role === 'admin'" ui-sref-active="active"><a ui-sref="admin">Admin</a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+        <li ng-hide="nav.isLoggedIn()" ui-sref-active="active"><a ui-sref="signup">Sign up</a></li>
+        <li ng-hide="nav.isLoggedIn()" ui-sref-active="active"><a ui-sref="login">Login</a></li>
+        <li ng-show="nav.isLoggedIn()">
+          <!--<a class="navbar-text" ng-if="nav.getCurrentUser().firstname || nav.getCurrentUser().lastname">Hello {{ nav.getCurrentUser().firstname }} {{ nav.getCurrentUser().lastname }}</a>-->
+          <!--<a class="navbar-text" ng-if="nav.getCurrentUser().name">Hello {{ nav.getCurrentUser().name }}</a>-->
+          <a ng-if="nav.getCurrentUser().role === 'caterer'" ui-sref="caterer-profile">Account Info <span class="fa fa-cog"></span></a>
+          <a ng-if="nav.getCurrentUser().role === 'user'" ui-sref="customer-profile">Account Info <span class="fa fa-cog"></span></a>
+        </li>
+        <!--<li ng-show="nav.isLoggedIn()" ui-sref-active="active"><a ui-sref="settings"></a></li>-->
+        <li ng-show="nav.isLoggedIn()"><a ui-sref="logout">Logout</a></li>
+      </ul>
+
+      <div class="btn-group nav navbar-nav navbar-right menu" ng-show="nav.isLoggedIn()"><notifications></notifications></div>
+
+      <div class="btn-group nav navbar-nav navbar-right menu" role="group">
+        <!--<a ui-sref="events" ng-show="nav.isLoggedIn()" class="btn btn-default">Draft</a>-->
+        <a ui-sref="events({ time: 'active' })" ui-sref-opts="{reload: true}" ng-show="nav.isLoggedIn()" ng-class="{'btn-info': eventParam.active }" class="btn btn-default">Active Events</a>
+        <a ui-sref="events({ time: 'past' })" ui-sref-opts="{reload: true}" ng-show="nav.isLoggedIn()" ng-class="{'btn-info': eventParam.past }" class="btn btn-default">Past Events</a>
+      </div>
+
+      <a class="btn btn-primary pull-right" ng-if="nav.getCurrentUser().role === 'user'" ui-sref="newEvent">Create new event</a>
+      <!--<a class="btn btn-primary pull-right" ng-if="!nav.isLoggedIn()" ui-sref="newEvent">Create new event</a>-->
+
+    </div>
+  </div>
+</div>

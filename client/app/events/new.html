@@ -1,0 +1,294 @@
+<div class="container">
+  <div class="row">    
+    <div class="col-sm-12" redirect="/events/new">
+      <h1>New event</h1>
+      <form class="form-fluid" name="form" novalidate>
+        <div class="row">
+          <div class="col-sm-5">
+            <div class="form-group" ng-class="{'has-error': (form.name.$touched && form.name.$error.required || form.$submitted && form.name.$untouched) }">
+              <label>Event Name</label>
+              <input tooltip-placement="top" uib-tooltip='Enter Event Name to use as a reference' type="text" name="name" class="form-control" ng-model="fm.name" required>
+              <div ng-show="form.$submitted || form.name.$touched">
+                <div ng-show="form.name.$error.required">Please enter name of event</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-7">
+            <div class="form-group">
+              <label>Description</label>
+              <input  tooltip-placement="top" uib-tooltip='Description is for your internal use' type="text" name="description" class="form-control" ng-model="fm.description">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="form-group" ng-class="{'has-error': (form.date.$touched && form.date.$error.required  || form.$submitted && form.date.$untouched)}">
+              <label>Date & Time of Event</label>
+              <p class="input-group">
+                <input  tooltip-placement="top" uib-tooltip='This is the date and time the event will start, not when catering should arrive' type="text" class="form-control" uib-datepicker-popup="MMMM d, y" ng-model="fm.date" is-open="popup1.opened" datepicker-options="dateOptions" required close-text="Close"/>
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-default" ng-click="open1()" style="height: 34px;"><i class="fa fa-calendar"></i></button>
+                </span>
+              </p>
+              <div ng-show="form.$submitted || form.date.$touched">
+                <div ng-show="form.date.$error.required">Please enter date</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group" ng-class="{'has-error': (form.time.$touched && form.time.$error.required || form.$submitted && form.time.$untouched)}">
+              <uib-timepicker ng-model="fm.time" hour-step="1" minute-step="1" show-meridian="true"></uib-timepicker>
+              <div ng-show="form.$submitted || form.time.$touched">
+                <div ng-show="form.time.$error.required">Please enter date</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group" ng-class="{'has-error': (form.people.$touched && form.people.$error.required || form.$submitted && form.people.$untouched)}">
+              <label>Total Meals</label>
+              <input tooltip-placement="top" uib-tooltip='Total number of meals needed'  type="number" name="people" class="form-control" required ng-model="fm.people">
+              <div ng-show="form.$submitted || form.people.$touched">
+                <div ng-show="form.people.$error.required">Please enter number of people</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label>Vegetarian Meals</label>
+              <input  tooltip-placement="top" uib-tooltip='Total number of Vegatarian meals' type="number" name="vegetarianMeals" class="form-control" ng-model="fm.vegetarianMeals">
+            </div>
+          </div>
+          <div class="col-sm-2">
+            <div class="form-group">
+              <label>Standard Meals</label>
+              <input readonly tooltip-placement="top" uib-tooltip='The number of standard meals, meaning non vegatarian. You can not update this field, only total meals and Vegatarian.' type="number" name="totaladttending" ng-model="fm.totalMeals" class="form-control">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <img src="/assets/images/pricing.png" />
+          </div>
+          <!-- <div class="col-sm-5">
+            <div class="form-group" ng-class="{'has-error': (form.$submitted || form.pricePerPerson.$touched) && form.pricePerPerson.$error.required}">
+              <label>Price per person</label>
+              <rzslider rz-slider-model="fm.pricePerPerson" rz-slider-options="{floor: 0.5, ceil: 200, showSelectionBar: true, step: 0.5, precision: 1}" ></rzslider>
+              <div ng-show="form.$submitted || form.pricePerPerson.$touched">
+                <div ng-show="form.pricePerPerson.$error.required">Please enter price per person</div>
+              </div>
+            </div>
+          </div> -->
+          <div class="col-sm-3">
+            <div class="form-group" ng-class="{'has-error': (form.$submitted || form.pricePerPerson.$touched) && form.pricePerPerson.$error.required}">
+              <label>Price per person</label>
+              <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input  tooltip-placement="top" uib-tooltip='This is the price per person/meal excluding sales tax' type="number" name="pricePerPerson" class="form-control" required ng-model="fm.pricePerPerson">
+              </div>
+              <div ng-show="form.$submitted || form.pricePerPerson.$touched">
+                <div ng-show="form.pricePerPerson.$error.required">Please enter price per person</div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group" ng-class="{'has-error': (form.$submitted || form.subTotal.$touched) && form.subTotal.$error.required}">
+              <label>Sub Total</label>
+              <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input readonly tooltip-placement="top" uib-tooltip='This is the subTotal Event excluding sales tax and tip' type="text" class="form-control" required ng-model="fm.subTotal">
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group" ng-class="{'has-error': (form.$submitted || form.tip.$touched)}">
+              <label>Tip Amount - % or $
+                <toggle class="tip-toggle-btn" ng-model="fm.toggleSymbol" on="%" off="$"></toggle>
+              </label>
+              <div class="input-group">
+                <span class="input-group-addon">{{fm.tipType}}</span>
+                <input  tooltip-placement="top" uib-tooltip='This is the tip excluding sales tax' type="number" name="tip" class="form-control" ng-model="fm.tip">
+              </div>              
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group" ng-class="{'has-error': (form.$submitted || form.totalEvent.$touched) && form.totalEvent.$error.required}">
+              <label class="totalEvent-label">Total w/t Tip</label>
+              <div class="input-group">
+                <span class="input-group-addon">$</span>
+                <input readonly tooltip-placement="top" uib-tooltip='This is the subTotal Event excluding sales tax and tip' type="text" class="form-control" required ng-model="fm.totalEvent">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="form-group" ng-class="{'has-error': (form.location.$touched && form.location.$error.required || form.$submitted && form.location.$untouched)}">
+              <label>Location</label>
+              <input  tooltip-placement="top" uib-tooltip='Enter the location of the event if it is delivery, or your business address if pickup or if you need a room offsite' type="text" name="location" class="form-control" required data-location="location" ng-model="fm.location"/>
+
+              <div ng-show="form.$submitted || form.location.$touched">
+                <div ng-show="form.location.$error.required">Please enter location</div>
+              </div>
+              <div class="form-group has-error" ng-if="vm.addressValidationError && !form.location.$error.required" style="padding:5px;">
+                {{ vm.addressValidationError }}
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Delivery Instructions</label>
+              <input  tooltip-placement="top" uib-tooltip='If there are any special delivery instructions like arrive x or check with front desk, enter it here' type="text" name="deliveryInstructions" class="form-control" ng-model="fm.deliveryInstructions" />
+            </div>
+            <div class="form-group">
+              <label>Special Request</label>
+              <input  tooltip-placement="top" uib-tooltip='If there are any special requests, enter them here, ex we want sweet tea' type="text" name="specialRequest" class="form-control" ng-model="fm.specialRequest">
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <label tooltip-placement="top" uib-tooltip='These are items you want included in the price'>Included in price</label>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="checkbox" ng-repeat="iip in includedInPrice">
+                  <label>
+                    <input type="checkbox" checklist-model="fm.includedInPrice" checklist-value="iip._id" checked="iip.checked"> {{iip.name}}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--<div class="row">-->
+        <!--<div class="col-sm-8">-->
+        <!--<label>Select Food Types</label>-->
+        <!--<div class="panel panel-default">-->
+        <!--<div class="panel-body">-->
+        <!--<div class="row">-->
+        <!--<div class="col-sm-5">-->
+        <!--<div class="ft-panel-fixed-height">-->
+        <!--<div class="checkbox" ng-repeat="type in foodTypes">-->
+        <!--<label>-->
+        <!--<input type="checkbox" checklist-model="fm.foodTypes" checklist-value="type._id" checked="type.checked" ng-click="vm.toggleFT()"> {{type.name}}-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-sm-7">-->
+        <!--<div class="select-all-header">-->
+        <!--<div class="checkbox">-->
+        <!--<label>-->
+        <!--<input type="checkbox" name="foodTypesAll" ng-model="foodTypesAll" ng-click="vm.toggleAll()"> Select All Restaurants-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="select-rest-block">-->
+        <!--<div class="checkbox" ng-repeat="caterer in caterers" ng-if="caterer.showByFT">-->
+        <!--<label>-->
+        <!--<input type="checkbox" checklist-model="fm.selectedCaterers" ng-change="vm.watchForEdit(caterer._id)" checklist-value="caterer._id" > {{caterer.companyName}}-->
+        <!--<span ng-repeat="ft in foodTypes" class="label label-default m-3" ng-if="vm.checkFT(ft._id, caterer)">{{ft.name}}</span>-->
+        <!--</label>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<div class="col-sm-4" ng-show="selectionOccured">-->
+        <!--<label>Selected Restaurants</label>-->
+        <!--<div class="panel panel-default">-->
+        <!--<div class="panel-body">-->
+        <!--<div class="ft-panel-fixed-height">-->
+        <!--<div class="selectedRest" ng-repeat="caterer in caterers" ng-if="caterer.showByEdit">-->
+        <!--<button class="btn btn-default btn-xs" ng-click="vm.watchForEdit(caterer._id)"><i class="fa fa-times"></i></button> <strong>{{caterer.companyName}}</strong> <span ng-repeat="ft in foodTypes" class="label label-default m-3" ng-if="vm.checkFT(ft._id, caterer)">{{ft.name}}</span>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--<filterCaterers data-caterers="caterers" data-food-types="foodTypes" data-service-types=""></filterCaterers>-->
+        <div class="row">
+          <div class="col-sm-4">
+            <label>Filter Caterers by category</label>
+            <uib-accordion close-others="false">
+              <uib-accordion-group is-open="true" tooltip-placement="top" uib-tooltip='Select the Food Type if you want to narrow the list of caterers your event is sent to.  You do not have to select any caterers manually if you dont want to'>
+                <uib-accordion-heading>
+                  Food Types <i class="pull-right fa" ng-class="{'fa-chevron-down': status.open, 'fa-chevron-right': !status.open}"></i>
+                </uib-accordion-heading>
+                <label><input ng-click="vm.toggleAllFT()" ng-model="filter.allFt" type="checkbox"> All</label>
+                <div class="category-container">
+                  <div class="checkbox" ng-repeat="type in foodTypes">
+                    <label>
+                      <input type="checkbox" checklist-model="fm.foodTypes" checklist-value="type._id" ng-click="vm.toggleCatOnclick('ft')"> {{type.name}}
+                    </label>
+                  </div>
+                </div>
+              </uib-accordion-group>
+              <uib-accordion-group is-open="true" tooltip-placement="top" uib-tooltip='Service Type allows you to add additional services to your order.  If you dont havea a room, you can request one here, if you want waiter service, or a cash bar, you can do that here.'>
+                <uib-accordion-heading>
+                  Service Types <i class="pull-right fa" ng-class="{'fa-chevron-down': status.open, 'fa-chevron-right': !status.open}"></i>
+                </uib-accordion-heading>
+                <div class="category-container">
+                  <div class="checkbox" ng-repeat="type in serviceTypes">
+                    <label>
+                      <input type="checkbox" checklist-model="fm.serviceTypes" ng-init="checked=false" checklist-value="type._id" ng-click="vm.toggleCatOnclick('st')"> {{type.name}}
+                    </label>
+                  </div>
+                </div>
+              </uib-accordion-group>
+            </uib-accordion>
+          </div>
+          <div class="col-sm-4">
+            <label tooltip-placement="top" uib-tooltip='This is Optional, but you can manually select the caterers you event goes to. You can even select just one caterer if you know which one you want.' >Optional - Manually Select Caterers to Send Event</label>
+            <div class="select-all-header">
+              <label>
+                <a class="btn btn-default btn-sm uncheck-filter-btn" ng-click="vm.toggleAll()">Uncheck list</a>
+              </label>
+            </div>
+            <div class="select-rest-block">
+              <div class="checkbox" ng-repeat="caterer in caterers" ng-if="caterer.showByCat">
+                <label>
+                  <input type="checkbox" checklist-model="fm.selectedCaterers" ng-change="vm.watchForEdit(caterer._id)" checklist-value="caterer._id" > {{caterer.companyName}}
+                  <a href="/caterers/{{caterer._id}}" class="label label-info m-3" target="_blank">view profile</a>
+                  <span ng-repeat="ft in foodTypes" class="label label-default m-3" ng-if="vm.checkFT(ft._id, caterer)">{{ft.name}}</span>
+                  <span ng-repeat="st in serviceTypes" class="label label-default m-3" ng-if="vm.checkST(st._id, caterer)">{{st.name}}</span>
+                </label>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-sm-4" ng-show="selectionOccured">
+            <label>Selected Caterers</label>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="ft-panel-fixed-height">
+                  <div class="selectedRest" ng-repeat="caterer in caterers" ng-if="caterer.showByEdit">
+                    <button class="btn btn-default btn-xs" ng-click="vm.watchForEdit(caterer._id)"><i class="fa fa-times"></i></button> <strong>{{caterer.companyName}}</strong> <span ng-repeat="ft in foodTypes" class="label label-default m-3" ng-if="vm.checkFT(ft._id, caterer)">{{ft.name}}</span> <span ng-repeat="st in serviceTypes" class="label label-default m-3" ng-if="vm.checkST(st._id, caterer)">{{st.name}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group has-error">
+          <p class="help-block" ng-show="form.name.$error.required && vm.submitted">
+            Please enter the name of new Event.
+          </p>
+          <p class="help-block">{{ vm.errors.other }}</p>
+        </div>
+        <div ng-if="vm.saved" class="alert alert-success">Event is successfully saved</div>
+        <div ng-if="vm.sent" class="alert alert-success">Event is successfully sent to caterers</div>
+        <div>
+          <button class="btn btn-default" type="submit" tooltip-placement="top" uib-tooltip='Allows you to save as Draft and return later to make changes and send' ng-click="vm.saveDraft(form)">
+            Save Draft of Event
+          </button>
+          <button class="btn btn-primary" type="submit" uib-tooltip='When you are ready, click send and the event will be sent to all filtered or selected caterers. They will then review and send back offers.' ng-click="vm.sendRequest(form)">
+            Send Event to Caters
+          </button>
+          <button class="btn btn-danger" ng-click="vm.cancel()">
+            Cancel changes
+          </button>
+        </div>
+        <div></div>
+        </form>
+    </div>
+  </div>
+</div>

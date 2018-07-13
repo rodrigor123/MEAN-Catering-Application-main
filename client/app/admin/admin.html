@@ -1,0 +1,136 @@
+<div class="container">
+  <p>The delete user and user index api routes are restricted to users with the 'admin' role.</p>
+
+  <uib-tabset active="active">
+    <uib-tab index="0" heading="User management">
+      <ul class="list-group user-list">
+        <li class="list-group-item" ng-repeat="user in admin.users | orderBy:'-created_date'" ng-if="user.role == 'user'">
+          <div class="user-info">
+            <strong ng-if="user.role === 'user'">{{user.firstname}} {{user.lastname}} {{user.name}}</strong><br>
+            <strong ng-if="user.role === 'caterer'">{{user.companyName}} {{user.name}}</strong><br>
+            <span class="text-muted">{{user.email}}</span>
+            <p>  Created On - {{user.created_date}}</p>
+          </div>
+          <a ng-click="admin.edit(user)" class="edit"><span class="fa fa-pencil fa-2x"></span></a>
+          <a ng-click="admin.delete(user)" class="trash"><span class="fa fa-trash fa-2x"></span></a>
+        </li>
+      </ul>
+    </uib-tab>
+    <uib-tab index="1" heading="Caterer management">
+      <ul class="list-group user-list">
+        <li class="list-group-item" ng-repeat="user in admin.users | orderBy:'-created_date'" ng-if="user.role == 'caterer'">
+          <div class="user-info">
+            <strong ng-if="user.role === 'user'">{{user.firstname}} {{user.lastname}} {{user.name}}</strong><br>
+            <strong ng-if="user.role === 'caterer'">{{user.companyName}} {{user.name}}</strong><br>
+            <span class="text-muted">{{user.email}}</span>
+            <p>  Created On - {{user.created_date}}</p>
+          </div>
+          <a ng-click="admin.edit(user)" class="edit"><span class="fa fa-pencil fa-2x"></span></a>
+          <a ng-click="admin.delete(user)" class="trash"><span class="fa fa-trash fa-2x"></span></a>
+        </li>
+      </ul>
+    </uib-tab>
+    <uib-tab index="2" heading="Food types">
+      <ul class="list-group user-list">
+        <li class="list-group-item" ng-repeat="type in admin.foodTypes">
+          <div class="row">
+            <div class="col-sm-1">
+              <span class="label label-info" ng-if="type.approved">approved</span>
+              <span class="label label-warning" ng-if="!type.approved">not approved</span>
+            </div>
+            <div class="col-sm-6">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Type new name" ng-model="type.name" />
+                <span class="input-group-btn">
+                  <a ng-click="admin.approveFoodType(type)" class="btn btn-default" ng-if="!type.approved">Approve</a>
+                  <a ng-click="admin.editFoodType(type)" class="btn btn-default">Send changes</a>
+                  <a ng-click="admin.deleteFoodType(type)" class="btn btn-danger"><span class="fa fa-trash"></span></a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="col-sm-1">
+          </div>
+          <div class="col-sm-6">
+            <br>
+            <br>
+            <div class="input-group">
+              <input class="form-control" type="text" ng-model="ft.newFoodType" />
+              <span class="input-group-btn">
+                <a class="btn btn-default" ng-click="admin.addFoodType()"><span class="fa fa-plus"></span></a>
+              </span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </uib-tab>
+    <uib-tab index="3" heading="Included in price">
+      <ul class="list-group user-list">
+        <li class="list-group-item" ng-repeat="iip in admin.includedInPrice">
+          <div class="row">
+            <div class="col-sm-7">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Type new name" ng-model="iip.name" />
+                <span class="input-group-btn">
+                  <a ng-click="admin.editIncludedInPrice(iip)" class="btn btn-default">Send changes</a>
+                  <a ng-click="admin.deleteIncludedInPrice(iip)" class="btn btn-danger"><span class="fa fa-trash"></span></a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="col-sm-7">
+            <br>
+            <br>
+            <div class="input-group">
+              <input class="form-control" type="text" ng-model="ut.newUt" />
+              <span class="input-group-btn">
+                <a class="btn btn-default" ng-click="admin.addIncludedInPrice()"><span class="fa fa-plus"></span></a>
+              </span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </uib-tab>
+    <uib-tab index="4" heading="Service types">
+      <ul class="list-group user-list">
+        <li class="list-group-item" ng-repeat="st in admin.serviceTypes">
+          <div class="row">
+            <div class="col-sm-7">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Type new name" ng-model="st.name" />
+                <span class="input-group-btn">
+                  <a ng-click="admin.editServiceType(st)" class="btn btn-default">Send changes</a>
+                  <a ng-click="admin.deleteServiceType(st)" class="btn btn-danger"><span class="fa fa-trash"></span></a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="col-sm-7">
+            <br>
+            <br>
+            <div class="input-group">
+              <input class="form-control" type="text" ng-model="st.newSt" />
+              <span class="input-group-btn">
+                <a class="btn btn-default" ng-click="admin.addServiceType()"><span class="fa fa-plus"></span></a>
+              </span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </uib-tab>
+    <uib-tab index="5" heading="Events">
+      <br />
+      <eventsadmin></eventsadmin>
+    </uib-tab>
+    <uib-tab index="6" heading="Payments">
+      <br />
+      <payments></payments>
+    </uib-tab>
+  </uib-tabset>
+</div>

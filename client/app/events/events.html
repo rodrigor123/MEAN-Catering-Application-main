@@ -1,0 +1,236 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="filter-events">
+            <div class="row">
+              <div class="col-sm-3">
+                <label tooltip-placement="top" uib-tooltip='Shows only events from the last 24hr or last hour. Once you select the filter you must check the box to the right to turn it on or off.'>Filter By</label>
+                <select class="input-sm form-control" ng-model="filter.dateFilter">
+                  <option value="All" selected >All</option>
+                  <option value="24">Last 24 Hr</option>
+                  <option value="1">Last Hr</option>
+                </select>
+              </div>
+              <div class="col-sm-4">
+                <label tooltip-placement="top" uib-tooltip='Click the check box to turn on and off the filters'>Select to Filter</label>
+                <div class="form-group">
+                  <label tooltip-placement="top" uib-tooltip='If you select the filter on the left, a yellow box will show how many events fit that filter. Click the check box to filter only these results.'><input type="checkbox" name="role" ng-model="filter.newEvents" /> <span ng-if="newEventsCount > 0" class="label label-warning">{{newEventsCount}}</span> # New of events</label>
+                  <label tooltip-placement="top" uib-tooltip='The green box will quickly let you know how many confirmed events you have. To filter only those, click the check box.'><input type="checkbox" name="role" ng-model="filter.confirmedEvents" /> <span ng-if="confirmedEventsCount > 0" class="label label-success">{{confirmedEventsCount}}</span> # Confirmed events</label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <table st-table="events" st-pipe="vm.pipe" class="table table-hover table-condensed table-events">
+            <thead>
+              <tr>
+                <th ng-if="vm.user.role == 'user'" tooltip-placement="top" uib-tooltip='Shows the status of the event, Sent and Confirmed'>Status</th>
+                <th st-sort="date" st-skip-natural="true" st-sort-default="true">Date</th>
+                <th>Time</th>
+                <th st-sort="name">Name</th>
+                <th st-sort="pricePerPerson">Price</th>
+                <th st-sort="people">People</th>
+                <th st-sort="location" ng-if="vm.user.role == 'caterer'" style="width: 150px;">Location</th>
+                <th style="width: 150px;">Description</th>
+                <th st-sort="offerStatus" ng-if="vm.user.role == 'caterer'">Offer</th>
+                <th colspan="2"></th>
+              </tr>
+              <tr>
+                <th ng-if="vm.user.role == 'user'"></th>
+                <th>
+                  <input st-search="date" style="width: 120px;" class="input-sm form-control" type="search"/>
+                </th>
+                <th></th>
+                <th>
+                  <input st-search="name" class="input-sm form-control" type="search"/>
+                </th>
+                <th>
+                  <input st-search="pricePerPerson" style="width: 50px;" class="input-sm form-control" type="search"/>
+                </th>
+                <th>
+                  <input st-search="people" style="width: 50px;" class="input-sm form-control" type="search"/>
+                </th>
+                <th ng-if="vm.user.role == 'caterer'"  style="width: 150px;">
+                  <input st-search="location" class="input-sm form-control" type="search"/>
+                </th>
+                <th style="width: 150px;">
+                  <input st-search="description" class="input-sm form-control" type="search"/>
+                </th>
+                <th ng-if="vm.user.role == 'caterer'">
+                  <input st-search="offerStatus" class="input-sm form-control" style="width: 100px;" type="search"/>
+                </th>
+                <th colspan="2"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-if="loading">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                  <button class="spinner-btn btn btn-success">Loading...
+                    <i class="fa fa-spinner fa-spin"></i>
+                  </button>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr ng-repeat="event in displayed track by $index" ng-class="{'drafted': event.drafted, 'active': event.active, 'hidden': event.hide}" ng-click="vm.setActiveEvent(event)">
+                <td ng-if="vm.user.role == 'user'">
+                  <!--<span class="label label-warning" ng-if="vm.user.role == 'caterer' && event.isUpdated">Updated!</span>-->
+                  <span class="label label-info" ng-if="vm.user.role == 'user'">{{event.paymentStatus || event.status}}</span></td>
+                <td>{{event.date | date: "longDate"}}</td>
+                <td style="width: 80px;">{{event.time | date: "shortTime"}}</td>
+                <td style="max-width: 100px;">{{event.name}}</td>
+                <td>{{event.pricePerPerson}}</td>
+                <td>{{event.people}}</td>
+                <td ng-if="vm.user.role == 'caterer' && event.offerStatus == 'accepted'" style="width: 180px;"><a target="_blank" href="http://maps.google.com/?q={{event.location}}">{{event.location}}</a></td>
+                <td ng-if="vm.user.role == 'caterer' && event.offerStatus != 'accepted'" style="width: 180px;"><a target="_blank" href="http://maps.google.com/?q={{event.location}}">{{event.address.City}}, {{event.address.State}}, {{event.address.Zip5}}</a></td>
+                <td style="max-width: 180px;">{{event.description}}</td>
+                <td ng-if="vm.user.role == 'caterer'">
+                  <span class="label label-default" uib-tooltip="Total amount of offers sent for this event">{{event.offersTotal}}</span>
+                  <span class="label label-info" ng-if="event.offerStatus" >{{event.offerStatus}}</span>
+                </td>
+                <td>
+                  <span ng-if="vm.user.role == 'user'">
+                    <a class="btn btn-xs btn-default" ng-if="!query.showPast" href="/events/{{event._id}}">Edit Event</a>
+                    <!--<a class="btn btn-xs btn-warning" ui-sref="offers" ng-click="vm.setActiveEvent(event)" >Offers ({{event.offersNumber}})</a>-->
+                    <a class="btn btn-xs btn-warning" uib-popover-html="event.offersInfo" popover-trigger="mouseenter" popover-placement="right">Offers ({{event.offersNumber}})</a>
+                  </span>
+                  <span ng-if="vm.user.role == 'caterer' && event.status !== 'completed' && !query.showPast">
+                    <a class="btn btn-xs btn-default" ng-if="event.offerStatus" href="{{event.offerUrl}}">Edit Offer</a>
+                    <a class="btn btn-xs btn-default" ng-if="!event.offerStatus" href="/offers/new">Create Offer</a>
+                  </span>
+                </td>
+                <td>
+                  <a class="btn btn-xs btn-danger" ng-click="vm.decline(event._id)" ng-if="vm.user.role == 'caterer' && event.status !== 'accepted' && event.status !== 'confirmed' && event.status !== 'completed' && !query.showPast">Decline Event</a>
+                  <div ng-if="vm.user.role == 'user' && event.status !== 'accepted' && event.status !== 'confirmed' && event.status !== 'completed' && !query.showPast">
+                    <a class="btn btn-xs btn-danger" ng-click="vm.cancel(event._id)">Cancel</a>
+                    <a class="btn btn-xs btn-default delete-event" ng-click="vm.delete(event)" title="Delete event"><i class="fa fa-times"></i></a>
+                  </div>
+                  <div ng-if="(event.status === 'confirmed' && event.paymentStatus === 'paid') || event.status === 'completed'">
+                    <a class="btn btn-xs btn-success" ng-click="vm.showInvoice($event, event)" ng-if="vm.user.role == 'user'">Invoice</a>
+                    <a class="btn btn-xs btn-success" ng-click="vm.showInvoice($event, event)" ng-if="vm.user.role == 'caterer'">Payable</a>
+                  </div>
+                </td>
+              </tr>
+              <tr ng-if="vm.user.role == 'caterer' && events.length == 0">
+                <td colspan="10" style="padding: 50px; text-align: center; font-size: 20px; color: #ccc;">No Jobs Listed</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td st-pagination="" st-items-by-page="10" colspan="4">
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" ng-if="isInvoiceMode">
+    <div class="col-sm-12">
+      <header>Invoice</header>
+      <article>
+        <table class="table col-sm-12">
+          <thead>
+            <tr class="active">
+              <th class="col-sm-1">#</th>
+              <th class="col-sm-5">Event Description</th>
+              <th class="col-sm-2"># People</th>
+              <th class="col-sm-2">$ Per Person</th>
+              <th class="col-sm-2">$ Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <!--<td><div uib-tooltip="{{eventForInvoice.offer.invoice._id}}" style="overflow: hidden; width: 50px; white-space: nowrap; text-overflow: ellipsis;">{{eventForInvoice.offer.invoice._id}}</div></td>-->
+              <td><div uib-tooltip="{{eventForInvoice.offer.invoice._id}}" style="overflow: hidden; width: 50px; white-space: nowrap; text-overflow: ellipsis;">1</div></td><!--Because invoice is only one per offer from Offer Model -->
+              <td>{{eventForInvoice.description}}</td>
+              <td>{{eventForInvoice.people.toFixed(2)}}</td>
+              <td>{{eventForInvoice.pricePerPerson.toFixed(2)}}</td>
+              <td>{{(eventForInvoice.people * eventForInvoice.pricePerPerson).toFixed(2)}}</td>
+            </tr>
+          </tbody>
+        </table>
+        <section class="col-sm-4 col-sm-offset-8">
+          <table class="table">
+            <tbody>
+              <tr ng-if="eventForInvoice.offer.counter">
+                <td>Counter</td>
+                <td>{{eventForInvoice.offer.counter.toFixed(2)}}</td>
+              </tr>
+              <tr>
+                <td>Sub Total</td>
+                <td>{{eventForInvoice.offer.invoice.subtotal.toFixed(2)}}</td>
+              </tr>
+              <tr>
+                <td>Sales Tax ({{((eventForInvoice.offer.invoice.tax/eventForInvoice.offer.invoice.service) * 100).toFixed(2)}}%)</td>
+                <td>{{eventForInvoice.offer.invoice.tax.toFixed(2)}}</td>
+              </tr>
+              <tr ng-if="eventForInvoice.offer.invoice.tip">
+                <td>Tip</td>
+                <td>{{eventForInvoice.offer.invoice.tip.toFixed(2)}}</td>
+              </tr>
+              <tr ng-if="vm.user.role == 'user' || vm.user.role == 'admin'">
+                <td><b>Total</b></td>
+                <td><b>{{eventForInvoice.offer.invoice.total.toFixed(2)}}</b></td>
+              </tr>
+              <tr class="success" ng-if="vm.user.role == 'user'">
+                <td>Charged to Credit Card</td>
+                <td>{{eventForInvoice.offer.invoice.total.toFixed(2)}}</td>
+              </tr>
+              <tr class="info" ng-if="!eventForInvoice.offer.invoice.refund && eventForInvoice.offer.invoice.commission && vm.user.role == 'caterer'">
+                <td>Commission ({{eventForInvoice.offer.invoice.commission.toFixed(2)}}%)</td>
+                <td>-{{(eventForInvoice.offer.invoice.total * (eventForInvoice.offer.invoice.commission / 100)).toFixed(2)}}</td>
+              </tr>
+              <tr class="info" ng-if="!eventForInvoice.offer.invoice.refund && eventForInvoice.offer.invoice.commission && vm.user.role == 'admin'">
+                <td>Commission ({{eventForInvoice.offer.invoice.commission.toFixed(2)}}%)</td>
+                <td>{{(eventForInvoice.offer.invoice.total * (eventForInvoice.offer.invoice.commission / 100)).toFixed(2)}}</td>
+              </tr>
+              <tr class="info" ng-if="!eventForInvoice.offer.invoice.refund && eventForInvoice.offer.invoice.adjustment.chargeOff && vm.user.role == 'admin'">
+                <td>Charge Off</td>
+                <td>-{{eventForInvoice.offer.invoice.adjustment.chargeOff.toFixed(2)}}</td>
+              </tr>
+              <tr class="info" ng-if="!eventForInvoice.offer.invoice.refund && eventForInvoice.offer.invoice.adjustment.caterer && (vm.user.role == 'caterer' || vm.user.role == 'admin')">
+                <td>Caterer Adjustment</td>
+                <td>-{{eventForInvoice.offer.invoice.adjustment.caterer.toFixed(2)}}</td>
+              </tr>
+              <tr class="warning" ng-if="!eventForInvoice.offer.invoice.refund && vm.user.role == 'admin'">
+                <td>Paid to Caterer</td>
+                <td>-{{(eventForInvoice.offer.invoice.total * ((100 - eventForInvoice.offer.invoice.commission) / 100) - eventForInvoice.offer.invoice.adjustment.caterer).toFixed(2)}}</td>
+              </tr>
+              <tr class="success" ng-if="!eventForInvoice.offer.invoice.refund && vm.user.role == 'admin'">
+                <td>Income</td>
+                <td>{{(eventForInvoice.offer.invoice.total * (eventForInvoice.offer.invoice.commission / 100) - eventForInvoice.offer.invoice.adjustment.chargeOff).toFixed(2)}}</td>
+              </tr>
+              <tr ng-if="vm.user.role == 'caterer'">
+                <td><b>Total</b></td>
+                <td ng-if="!eventForInvoice.offer.invoice.refund"><b>{{(eventForInvoice.offer.invoice.total * ((100 - eventForInvoice.offer.invoice.commission) / 100) - eventForInvoice.offer.invoice.adjustment.caterer).toFixed(2)}}</b></td>
+                <td ng-if="eventForInvoice.offer.invoice.refund"><b>{{eventForInvoice.offer.invoice.total.toFixed(2)}}</b></td>
+              </tr>
+              <tr class="danger" ng-if="eventForInvoice.offer.invoice.refund">
+                <td ng-if="vm.user.role == 'user'">Refund</td>
+                <td ng-if="vm.user.role != 'user'">Refund to client</td>
+                <td>-{{eventForInvoice.offer.invoice.refund.toFixed(2)}}</td>
+              </tr>
+              <tr class="warning" ng-if="!eventForInvoice.offer.invoice.refund && eventForInvoice.offer.invoice.adjustment.client && vm.user.role == 'user'">
+                <td>Partial Refund</td>
+                <td>-{{eventForInvoice.offer.invoice.adjustment.client.toFixed(2)}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </article>
+    </div>
+  </div>
+  <div class="row" ng-if="vm.user.role == 'user' && !isInvoiceMode">
+    <div class="col-sm-12">
+      <offerslist past="query.showPast"></offerslist>
+    </div>
+  </div>
+</div>

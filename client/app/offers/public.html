@@ -1,0 +1,159 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Offer</h1>
+      <uib-accordion>
+        <uib-accordion-group heading="Event Details - Click to Open and Close Window" is-open="true">
+          <div class="panel panel-default" style="padding: 10px; background-color: #e7e7e7 ">
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label>Event Name: </label>
+                  <span>{{vm.event.name}}</span>
+                </div>
+              </div>
+              <div class="col-sm-8">
+                <div class="form-group">
+                  <label>Description: </label>
+                  <span>{{vm.event.description}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label>Date: </label>
+                  <span>{{vm.event.date | date: "longDate"}}</span>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label>Time: </label>
+                  <span>{{vm.event.time | date: "shortTime"}}</span>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label>Price per person: </label>
+                  <span>{{vm.event.pricePerPerson}}</span>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label tooltip-placement="top" uib-tooltip='This is the total number of meals including Vegetarian'>Total Meals: </label>
+                  <span>{{vm.event.people}}</span>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label>Vegetarian Meals: </label>
+                  <span>{{vm.event.vegetarianMeals}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Location: </label>
+                  <span>{{vm.event.location}}</span>
+                </div>
+                <div class="form-group">
+                  <label>Delivery Instructions: </label>
+                  <span>{{vm.event.deliveryInstructions}}</span>
+                </div>
+                <div class="form-group">
+                  <label>Special Request: </label>
+                  <span>{{vm.event.specialRequest}}</span>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <label>Included in price: </label>
+                <ul>
+                  <li ng-repeat="iip in vm.event.includedInPrice">
+                    {{iip.name}}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </uib-accordion-group>
+      </uib-accordion>
+
+      <div>
+        <h2>Offer Details</h2>
+        <hr />
+      </div>
+      <div class="panel panel-default" style="padding: 10px; background-color: #e7e7e7 ">
+        <div class="row">
+          <div class="col-sm-6">
+            <h3>
+              <small>Offer from</small> <b>{{offer.catererName}}</b>
+            </h3>
+            <h3>
+              <small>Total price:</small> <b>${{offer.invoice.total.toFixed(2)}}</b> <span class="label label-info">{{offer.paymentStatus || offer.status}}</span>
+            </h3>
+          </div>
+          <div class="col-sm-6" ng-if="vm.user.role == 'user' && offer.status == 'sent' && !past">
+            <hr>
+            <button class="btn btn-success" ng-click="vm.accept(offer._id)">Accept</button>
+            <button class="btn btn-danger" ng-click="vm.decline(offer._id)">Decline</button>
+            <hr>
+          </div>
+        </div>
+        <div class="row">
+          <div class="container-fluid" ng-class="{'cancelled-offer': offer.status === 'cancelled', 'drafted': offer.drafted}">
+            <div class="row">
+              <div class="col-sm-6">
+                <p><b>Price per person:</b> ${{offer.pricePerPerson}}</p>
+                <p ng-if="offer.counter"><b>Counter:</b> ${{offer.counter}} </p>
+                <p >Subtotal: <b>${{offer.invoice.service.toFixed(2)}}</b> </p>
+                <p >Tax: <b>${{offer.invoice.tax.toFixed(2)}}</b> </p>
+                <p>Total: <b>${{offer.invoice.total.toFixed(2)}}</b> </p>
+                <p ng-if="offer.counterReason"><b>Counter Reason:</b> {{offer.counterReason}}</p>
+              </div>
+              <div class="col-sm-3" ng-if="offer.includedInPrice.length">
+                <p><b>Offer Included in price:</b></p>
+                <ul>
+                  <li ng-repeat="iip in offer.includedInPrice">
+                    {{iip.name}}
+                  </li>
+                </ul>
+              </div>
+              <div class="col-sm-3" ng-if="vm.event.includedInPrice.length">
+                <p><b>Event Included in price:</b></p>
+                <ul>
+                  <li ng-repeat="iip in vm.event.includedInPrice">
+                    {{iip.name}}
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <p ng-if="offer.offerDescription"><b>Offer Description:</b> <p style="white-space: pre-wrap;">{{offer.offerDescription}}</p></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div offercomments offer="offer"></div>
+      <hr>
+      <div class="row">
+        <div class="col-sm-6">
+          <div ng-if="offer.caterer.logo" class="img-thumbnail" width="300" ng-draw="{file: offer.caterer.logo, width: 300}"></div>
+        </div>
+        <div class="col-sm-6">
+          <a href="/caterers/{{offer.catererId}}" class="label label-info m-3" target="_blank" style="font-size: 100%;">View Profile</a>
+          <p></p>
+          <p ng-if="offer.caterer.website"><b>Website:</b> <a href="http://{{offer.caterer.website}}" target="_blank">{{offer.caterer.website}}</a> </p>
+          <p ng-if="offer.caterer.location"><b>Location:</b> {{offer.caterer.location}}</p>
+          <p ng-if="offer.caterer.ninja_firstname"><b>Contact:</b> {{offer.caterer.ninja_firstname}} {{offer.caterer.ninja_lastname}}</p>
+          <p ng-if="offer.caterer.ninja_firstname"><b>Contact Email:</b> {{offer.caterer.ninja_email}}</p>
+          <p ng-if="offer.caterer.ninja_firstname"><b>Contact Phone:</b> {{offer.caterer.ninja_phone}}</p>
+          <p ng-if="offer.caterer.description"><b>Description:</b> {{offer.caterer.description}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

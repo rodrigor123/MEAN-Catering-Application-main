@@ -1,0 +1,34 @@
+<div class="comment panel" ng-class="{'panel-warning': comment.showUnviewed, 'panel-default': !comment.showUnviewed }">
+  <div class="panel-heading comment-header">
+    <!--<button ng-if="comment.children" class="btn btn-xs btn-default comments-collapse-button" title="toggle children" ng-click="collapse(comment)"><span class="fa" ng-class="{'fa-chevron-down': !comment.collapsed, 'fa-chevron-up': comment.collapsed}"></span></button>-->
+    <span class="comment-user">
+      <span class="fa fa-bell" style="color: orange"  ng-if="comment.showUnviewed"></span>
+      <span class="fa fa-comment-o" style="color: grey"  ng-if="!comment.showUnviewed"></span>
+      <a class="comment-username" ng-if="comment.profileUrl" ng-href="{{comment.profileUrl}}" title="{{comment.name}}">{{comment.name}}</a>
+      <img class="comment-avatar" ng-if="comment.avatarUrl" ng-src="{{comment.avatarUrl}}" alt="{{comment.name}}" />
+      <span class="comment-username" ng-if="!comment.profileUrl">{{comment.name}}</span>
+      <span class="comment-date" ng-if="comment.date">{{comment.date | date: "longDate" }} {{comment.date | date: "shortTime"}}</span>
+      <a class="btn btn-success btn-xs pull-right btn-mark-as-read" ng-click="markAsRead(comment); comment.showUnviewed = false;" tooltip-placement="left" uib-tooltip="Mark as read" ng-if="comment.link  && comment.showUnviewed"><span class="fa fa-check-square-o"></span></a>
+      <a href="{{comment.link}}" tooltip-placement="left" uib-tooltip="View offer and comments" class="pull-right" ng-if="comment.link">Go to offer</a>
+    </span>
+  </div>
+  <div class="comment-body panel-body" id="{{ 'id' + comment._id }}">
+    <div ng-bind="comment.text"></div>
+    <div ng-hide="comment.collapsed">
+      <div comments-transclude comment-data="comment.children"></div>
+    </div>
+  </div>
+  <!--<div class="panel-footer">-->
+    <!--<form name="form" ng-submit="add(comment)" ng-hide="comment.toggled">-->
+      <!--<div class="form-group">-->
+        <!--<textarea class="form-control" required ng-model="comment.new" placeholder="Your comment" ng-minlength="5" rows="2"></textarea>-->
+      <!--</div>-->
+      <!--<button ng-disabled="form.$invalid" type="submit" class="btn btn-primary btn-sm" disabled="disabled">Submit</button>-->
+      <!--<button class="btn btn-default btn-sm pull-right" ng-click="cancel(comment)">Close</button>-->
+    <!--</form>-->
+    <!--<button class="btn btn-primary btn-sm pull-right" ng-show="comment.toggled" ng-click="toggleFrom(comment)">-->
+      <!--Add comment-->
+    <!--</button>-->
+    <!--<div class="clearfix"></div>-->
+  <!--</div>-->
+</div>

@@ -1,0 +1,149 @@
+<div class="container" ng-if="eventId">
+  <div class="col-sm-12" ng-if="!oc.user.payableAccountId && oc.verifyCard">
+    <form stripe:form="saveCustomer" name="ccForm" novalidate>
+      <h1>Please Verify your Credit Card</h1>
+      <p>To send an event we need to have a valid credit card on file.  This credit card will be saved in your profile for payment.</p>
+      <p>You can always update your credit card information in the Account Info in the upper right.</p>
+      <div class="form-group"  style="width:25%">
+        <label for="card-number">Card Number</label>
+        <input type="text" class="form-control" id="cardNumber" cc-number cc-eager-type cc-format="card" cc-validate="card" maxlength="19" name="ccNumber" ng-model="card.number" data-stripe="number" ng-required="true">
+      </div>
+      <div class="form-group"  style="width:10%">
+        <label for="cvc">CVC</label>
+        <input type="text" class="form-control" id="cvc" cc-cvc cc-type="ccForm.ccNumber.$ccType" name="ccCvc" ng-model="card.cvc" data-stripe="cvc" ng-required="true">
+      </div>
+      <div class="form-group"  style="width:35%">
+        <label for="card-number">Expiration</label>
+        <div class="row" cc-exp>
+          <div class="col-xs-3">
+            <input placeholder="MM" type="text" class="form-control" cc-exp-month name="ccExpMonth" ng-model="card.expiration.month" data-stripe="exp-month" ng-required="true">
+          </div>
+          <div class="col-xs-3">
+            <input placeholder="YY" type="text" class="form-control" cc-exp-year name="ccExpYear" ng-model="card.expiration.year" data-stripe="exp-year" ng-required="true">
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </div>
+    </form>
+    <p ng-show="ccForm.ccNumber.$invalid && ccForm.ccNumber.$ccEagerType">
+      Looks like you're typing a {{ccForm.ccNumber.$ccEagerType}} number!
+    </p>
+    <p ng-show="ccForm.ccNumber.$valid && ccForm.ccNumber.$ccType">
+      Yes, that looks like a valid {{ccForm.ccNumber.$ccType}} number!
+    </p>
+    <p ng-show="ccForm.ccNumber.$error.required">
+      You must enter a credit card number!
+    </p>
+    <div ng-if="stripe.error" class="alert alert-danger">{{stripe.error.message}}</div>
+  </div>
+  
+  <div ng-if="oc.user.payableAccountId || !oc.verifyCard">
+    <div class="row">
+      <div class="col-sm-12">
+        <h3 class="pull-left">Offers</h3>
+        <!--<button class="btn btn-primary pull-right"  ng-if="oc.user.role == 'caterer'" ui-sref="newOffer">Edit offer</button>-->
+      </div>
+    </div>
+    <div class="row">
+      <div class="offers-pills">
+        <uib-tabset active="activePill" vertical="true" type="pills">
+          <uib-tab ng-repeat="offer in offers" heading="{{offer.catererName}}">
+            <div class="panel panel-default" style="padding: 10px; background-color: #e7e7e7 ">
+              <div class="row">
+                <div class="col-sm-6">
+                  <h3>
+                    <small>Offer from</small> <b>{{offer.catererName}}</b>
+                  </h3>
+                  <h3>
+                    <small>Total price:</small> <b>${{offer.invoice.total.toFixed(2)}}</b> <span class="label label-info">{{offer.paymentStatus || offer.status}}</span>
+                  </h3>
+                </div>
+                <div class="col-sm-6" ng-if="!past && oc.user.role != 'admin'">
+                  <div ng-if="offer.status == 'sent' && !offer.drafted">
+                    <hr>
+                    <button class="btn btn-success" ng-click="oc.accept(offer._id)">Accept</button>
+                    <button class="btn btn-danger" ng-click="oc.decline(offer._id)">Decline</button>
+                  </div>
+                  <!-- <div ng-if="offer.paymentStatus === 'hold'">
+                    <hr>
+                    <a class="btn btn-success" ng-click="oc.capture(offer)">Pay</a>
+                  </div>
+                  <div ng-if="offer.status === 'confirmed' && !offer.paymentStatus">
+                    <hr>
+                    <a class="btn btn-success" ng-click="oc.auth(offer)">Hold</a>
+                  </div> -->
+                  <hr>
+                </div>
+              </div>
+              <div class="row">
+                <div class="container-fluid" ng-if="eventId" ng-class="{'cancelled-offer': offer.status === 'cancelled', 'drafted': offer.drafted}">
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <p><b>Price per person:</b> ${{offer.pricePerPerson}}</p>
+                      <p ng-if="offer.counter"><b>Counter Offer Price Per Person:</b> ${{offer.counter}} </p>
+                      <p >Subtotal: <b>${{offer.invoice.service.toFixed(2)}}</b> </p>
+                      <p >Tax: <b>${{offer.invoice.tax.toFixed(2)}}</b> </p>
+                      <p >Tip: <b>${{offer.invoice.tip.toFixed(2)}}</b> </p>
+                      <p>Total: <b>${{offer.invoice.total.toFixed(2)}}</b> </p>
+                      <p ng-if="offer.counterReason"><b>Counter Reason:</b> {{offer.counterReason}}</p>
+                    </div>
+                    <div class="col-sm-3" ng-if="offer.includedInPrice.length">
+                      <p><b>Offer Included in price:</b></p>
+                          <ul>
+                            <li ng-repeat="iip in offer.includedInPrice">
+                              {{iip.name}}
+                            </li>
+                          </ul>
+                    </div>
+                    <div class="col-sm-3" ng-if="event.includedInPrice.length">
+                      <p><b>Event Included in price:</b></p>
+                      <ul>
+                        <li ng-repeat="iip in event.includedInPrice">
+                          {{iip.name}}
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <p ng-if="offer.offerDescription"><b>Offer Description:</b> <p style="white-space: pre-wrap;">{{offer.offerDescription}}</p></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row" ng-if="oc.user.role != 'admin'">
+              <div style="padding: 10px;" offercomments offer="offer"></div>
+              <hr>
+            </div>
+            <div class="row" ng-if="oc.user.role != 'admin'">
+              <div class="col-sm-6">
+                <div ng-if="offer.caterer.logo" class="img-thumbnail" width="300" ng-draw="{file: offer.caterer.logo, width: 300}"></div>
+              </div>
+              <div class="col-sm-6">
+                <a ng-if="offer.caterer.website" href="/caterers/{{offer.catererId}}" class="label label-info m-3" target="_blank" style="font-size: 100%;">View Profile</a>
+                <p></p>
+                <p ng-if="offer.caterer.website"><b>Website:</b> <a href="http://{{offer.caterer.website}}" target="_blank">{{offer.caterer.website}}</a> </p>
+                <p ng-if="offer.caterer.location"><b>Location:</b> {{offer.caterer.location}}</p>
+                <p ng-if="offer.caterer.ninja_firstname"><b>Contact:</b> {{offer.caterer.ninja_firstname}} {{offer.caterer.ninja_lastname}}</p>
+                <p ng-if="offer.caterer.ninja_firstname"><b>Contact Email:</b> {{offer.caterer.ninja_email}}</p>
+                <p ng-if="offer.caterer.ninja_firstname"><b>Contact Phone:</b> {{offer.caterer.ninja_phone}}</p>
+                <p ng-if="offer.caterer.description"><b>Description:</b> {{offer.caterer.description}}</p>
+              </div>
+            </div>
+          </uib-tab>
+        </uib-tabset>
+      </div>
+    </div>  
+  </div>
+  
+</div>
+<div class="container" ng-if="!eventId">
+  <div class="row">
+    <div class="col-sm-12">
+      <h3>No Events Selected, Select an Event to See Offers</h3>
+    </div>
+  </div>
+</div>

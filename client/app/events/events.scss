@@ -1,0 +1,161 @@
+.table.table-events {
+
+  tbody tr {
+    td {
+      border-bottom: 1px solid #ddd;
+      .btn.delete-event {
+        display: inline-block;
+        float: right;
+      }
+    }
+
+    &.drafted td {
+      background: #eee !important;
+      color: #aaa;
+
+      .btn {
+        display: none;
+      }
+
+      .btn.delete-event {
+        display: inline-block;
+        float: right;
+      }
+    }
+
+    &.hidden {
+      display: none !important;
+    }
+    &.active, &.active td {
+      background: #FCE6A2 !important;
+    }
+  }
+
+  thead>tr>th {
+    /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#ffffff+0,f6f6f6+47,ededed+100;White+3D+%231 */
+    background: rgb(255,255,255); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(246,246,246,1) 47%, rgba(237,237,237,1) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(237,237,237,1) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(246,246,246,1) 47%,rgba(237,237,237,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+  }
+}
+
+.uib-timepicker {
+  .uib-decrement {
+    .btn.btn-link {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+  .uib-increment {
+    .btn.btn-link {
+      padding-top: 3px;
+      padding-bottom: 0;
+    }
+  }
+
+  .showMeridian {
+    .btn {
+      margin-left: 5px;
+    }
+  }
+}
+
+.uib-daypicker {
+  margin-right: 3px;
+  th:first-of-type {
+    padding-left: 3px;
+    padding-right: 3px;
+  }
+}
+
+.select-all-header {
+  background: #efefef;
+  padding: 3px 15px;
+  border-radius: 3px 3px 0 0;
+  box-shadow: 0 2px 10px #dedede inset;
+  text-align: right;
+
+  .uncheck-filter-btn {
+    margin-top: 5px;
+  }
+}
+
+.select-rest-block {
+  height: 426px;
+  overflow: auto;
+  border: 1px solid #ccc;
+  border-radius: 0 0 3px 3px;
+  box-shadow: 0 -2px 10px #dedede inset;
+  padding: 3px 15px;
+}
+
+.category-container {
+  height: 150px;
+  overflow: auto;
+}
+
+.m-3 {
+  margin-right: 3px;
+}
+
+.ft-panel-fixed-height {
+  height: 440px;
+  overflow: auto;
+}
+
+.has-error {
+  color: #a94442;
+
+  input {
+    border-color: #a94442;
+  }
+}
+
+.popover-divider {
+   margin: 5px 0;
+  &:last-of-type {
+    display: none;
+  }
+}
+
+.table-events th {
+  text-align: left !important;
+  cursor: pointer;
+}
+.st-sort-ascent:before {
+  content: '\25B2';
+}
+.st-sort-descent:before {
+  content: '\25BC';
+}
+
+.pagination {
+  margin: 20px 0 0 0;
+}
+
+.toggle.btn {
+  min-width: 40px;
+  min-height: 25px;
+  height: 25px !important;
+  width: 40px !important;
+}
+.toggle-on.btn{ 
+  padding: 2px 10px 2px 0;
+}
+.toggle-off.btn {
+  padding: 2px 0px 2px 10px;
+}
+label.totalEvent-label{
+  margin-bottom: 10px;
+}
+.confirm-adjustment {
+  border-radius: 5px;
+  padding: 5px 20px;
+  margin: 10px;
+}
+.spinner-btn {
+  display: table;
+  margin: 0 auto;
+}

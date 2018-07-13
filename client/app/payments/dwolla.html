@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Payment Setup</h1>
+    </div>
+    <div class="col-sm-12">
+      <div ng-if="vm.isAuth">
+        Integration with Dwolla has been finished.
+      </div>
+      <div ng-if="!vm.isAuth">
+        <p ng-if="vm.user.role === 'admin'">
+          Your dwolla tokens have been expired or you don't have enough money in your Dwolla account. Please, check your balance in your Dwolla account and relogin to Dwolla.
+        </p>
+        <p ng-if="vm.user.role !== 'admin'">
+        Before you can send an offer, we have to set up up to get paid! But don't worry, it is easy and free.  We use Dwolla for payments, so when you click OK you will be redirected to the Dwolla website to setup your account.
+        </p>
+        <button class="btn btn-primary" type="button" ng-click="vm.toDwollaAuth()">
+              To Dwolla Login
+            </button>
+      </div>
+    </div>
+  </div>
+  <hr>
+</div>

@@ -1,0 +1,11 @@
+<div class="offer-comments" id="{{ 'id' + offer._id }}">
+  <comments comment-data="comments" comment-depth-limit="3"></comments>
+  <div class="add-comment">
+    <form name="form">
+      <div class="form-group">
+        <textarea class="form-control" required ng-model="newComment" placeholder="Ask a question of the customer or caterer here" ng-minlength="5" rows="2" ng-disabled="(offer.status === 'confirmed' && offer.paymentStatus === 'paid') || offer.status === 'completed'"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary btn-sm" ng-disabled="(offer.status === 'confirmed' && offer.paymentStatus === 'paid') || offer.status === 'completed' || disabled || form.$invalid" ng-click="occ.create()">Submit</button>
+    </form>
+  </div>
+</div>

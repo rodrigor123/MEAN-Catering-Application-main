@@ -1,0 +1,189 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12" ng-if="!vm.user.address">
+      <h1>Your address is required</h1>
+      Please, add you address via Account Info.
+    </div>
+    <div class="col-sm-12">
+      <h1>New offer</h1>
+      <uib-accordion>
+        <uib-accordion-group heading="Event Details - Click to Open and Close Window" is-open="true">
+          <div class="panel panel-default" style="padding: 10px; background-color: #e7e7e7 ">
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label>Event Name</label>
+                  <span>{{vm.event.name}}</span>
+                </div>
+              </div>
+              <div class="col-sm-8">
+                <div class="form-group">
+                  <label>Description</label>
+                  <span>{{vm.event.description}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-4">
+                <div class="form-group">
+                  <label>Date</label>
+                  <span>{{vm.event.date | date: "longDate"}}</span>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label>Time</label>
+                  <span>{{vm.event.time | date: "shortTime"}}</span>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label>Price per person</label>
+                  <span>{{vm.event.pricePerPerson}}</span>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label tooltip-placement="top" uib-tooltip='This is the total number of meals including Vegetarian'>Total Meals</label>
+                  <span>{{vm.event.people}}</span>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <div class="form-group">
+                  <label>Vegetarian Meals</label>
+                  <span>{{vm.event.vegetarianMeals}}</span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Location</label>
+                  <span>{{vm.event.address.City}}, {{vm.event.address.State}}, {{vm.event.address.Zip5}}</span>
+                </div>
+                <div class="form-group">
+                  <label>Delivery Instructions</label>
+                  <span>{{vm.event.deliveryInstructions}}</span>
+                </div>
+                <div class="form-group">
+                  <label>Special Request</label>
+                  <span>{{vm.event.specialRequest}}</span>
+                </div>
+              </div>
+              <div class="col-sm-2">
+                <label>Included in price</label>
+                <ul>
+                  <li ng-repeat="iip in includedInPrice" ng-if="iip.checked">
+                    {{iip.name}}
+                  </li>
+                </ul>
+              </div>
+              <div class="col-sm-2">
+                <label>Services Requested</label>
+                <ul>
+                  <li ng-repeat="st in serviceTypes" ng-if="st.checked">
+                    {{st.name}}
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </uib-accordion-group>
+      </uib-accordion>
+      <h2>Create an offer</h2>
+      <form class="form-fluid" name="form" novalidate>
+        <input type="hidden" name="eventId" value="{{fm.eventId}}" />
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label tooltip-placement="top" uib-tooltip='All inclusive price per person.  Does not include tax.'>Price per person</label>
+              <div class="input-group">
+                <input type="number" name="pricePerPerson" disabled class="form-control" ng-model="fm.pricePerPerson">
+                <span class="input-group-addon">$</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label tooltip-placement="top" uib-tooltip='You can counter with a higher price if you like'>Counter Price</label>
+              <div class="input-group">
+                <input type="number" name="counter" class="form-control" ng-model="fm.counter">
+                <span class="input-group-addon">$</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="form-group">
+              <label tooltip-placement="top" uib-tooltip='It is suggested that you enter a reason for the higher price'>Counter Reason</label>
+              <input type="text" name="counterReason" class="form-control" ng-model="fm.counterReason">
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label tooltip-placement="top" uib-tooltip='Total Event Price.  Does not include tax.'>Total Event Price wo Tax</label>
+              <div class="input-group">
+                <input type="number" name="priceTotal" disabled class="form-control" ng-model="fm.priceTotal">
+                <span class="input-group-addon">$</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <div class="form-group">
+              <label tooltip-placement="top" uib-tooltip='Total Counter Price.  Does not include tax.'>Counter Total wo Tax</label>
+              <div class="input-group">
+                <input type="number" name="counterTotal" disabled class="form-control" ng-model="fm.counterTotal">
+                <span class="input-group-addon">$</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-9">
+            <div class="form-group">
+              <label tooltip-placement="top" uib-tooltip='Enter the Offer details below'>Offer Details</label>
+              <templates></templates>
+              <!--<textarea name="offerDescription" class="form-control" ng-model="fm.offerDescription"></textarea>-->
+            </div>
+          </div>
+          <div class="col-sm-3">
+            <label tooltip-placement="top" uib-tooltip='Items that should be included with the price.  You do not have to include anything if you wish'>Included in price</label>
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="checkbox" ng-repeat="iip in includedInPrice">
+                  <label>
+                    <input type="checkbox" checklist-model="fm.includedInPrice" checklist-value="iip._id" checked="iip.checked"> {{iip.name}}
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group has-error">
+          <p class="help-block" ng-show="form.name.$error.required && vm.submitted">
+            Please enter the name of new Event.
+          </p>
+          <p class="help-block">{{ vm.errors.other }}</p>
+        </div>
+        <div ng-if="vm.saved" class="alert alert-success">Offer is successfully saved</div>
+        <div ng-if="vm.sent" class="alert alert-success">Offer is successfully sent to Customer</div>
+        <div>
+          <div>
+            <button class="btn btn-primary" type="submit" ng-click="vm.sendRequest(form)"  ng-if="fm.status !== 'confirmed' && fm.status !== 'accepted' && fm.status !== 'cancelled' && !vm.sent">
+              Send Offer
+            </button>
+            <button class="btn btn-inverse" ng-if="vm.sent || vm.cancelled || vm.confirmed" ng-click="vm.backToList()">Return to events list</button>
+            <button class="btn btn-primary" type="submit" ng-click="vm.saveDraft(form)" ng-if="fm.status !== 'confirmed' && fm.status !== 'accepted' && fm.status !== 'cancelled' && !vm.sent">
+              Save Changes
+            </button>
+            <button class="btn btn-primary" type="submit" ng-click="vm.cancelChanges(form)"  ng-if="fm.status !== 'confirmed' && fm.status !== 'accepted' && fm.status !== 'cancelled'">
+              Cancel Changes
+            </button>
+          </div>
+        </div>
+        <div></div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<br />
+<div class="container-fluid" style="padding: 0;">
+  <div class="row">
+    <div class="col-sm-3">
+      <label>Template name</label>
+    </div>
+    <div class="col-sm-6">
+      <label>Template description</label>
+    </div>
+    <div class="col-sm-3">
+
+    </div>
+  </div>
+  <div class="row" ng-repeat="tpl in templates track by tpl._id">
+    <div class="col-sm-3">
+      <div class="from-group">
+       <input class="form-control" type="text" ng-model="tpl.name" ng-model="{{tpl.name}}" />
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="from-group">
+        <textarea class="form-control" ng-model="tpl.description">{{tpl.description}}</textarea>
+        <br />
+        <div class="alert alert-success" role="alert" ng-if="tpl.saved">Template is successfully saved</div>
+      </div>
+    </div>
+    <div class="col-sm-3">
+      <div class="from-group">
+        <button class="btn btn-default" ng-click="tc.editTpl(tpl)">Save template</button>
+        <button class="btn btn-danger" ng-click="tc.delete(tpl)">Delete</button>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <div class="row">
+    <div class="col-sm-3">
+      <label>Template name</label>
+      <div class="from-group">
+        <input class="form-control" type="text" ng-model="tfm.name" />
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <label>Template description</label>
+      <div class="from-group">
+        <textarea class="form-control" ng-model="tfm.description"></textarea>
+      </div>
+      <br />
+      <div class="alert alert-success" role="alert" ng-if="tc.saved">Template is successfully added</div>
+    </div>
+    <div class="col-sm-3">
+      <label>&nbsp;</label>
+      <div class="from-group">
+        <a class="btn btn-default" ng-click="tc.createTpl(tfm)"><span class="fa fa-plus"></span> Add new template</a>
+      </div>
+    </div>
+  </div>
+</div>

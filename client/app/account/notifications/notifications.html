@@ -1,0 +1,8 @@
+<div class="btn-group notification" uib-dropdown is-open="status.isopen" id="notifications-container">
+  <button id="single-button" type="button" class="btn" ng-class="{ 'btn-warning': commentsNumber > 0, 'btn-default': commentsNumber == 0 }" uib-dropdown-toggle ng-disabled="disabled">
+    <span class="fa fa-bell-o"></span> {{commentsNumber}} <span class="caret"></span>
+  </button>
+  <div class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button" ng-if="commentsNumber > 0">
+    <comments comment-data="comments" comment-depth-limit="1"></comments>
+  </div>
+</div>

@@ -1,0 +1,112 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>{{vm.user.companyName}} Profile</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-5" ng-if="vm.user.logo">
+      <div class="img-thumbnail" ng-draw="{file: vm.user.logo, width: 400, userId: vm.user._id}"></div>
+    </div>
+    <div class="col-sm-7">
+      <div class="row">
+        <div class="col-sm-6">
+          <p ng-if="vm.user.description">
+            <b>Description: </b> </br>{{vm.user.description}}
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <p ng-if="vm.user.phone">
+            <b>Phone: </b></br> {{vm.user.phone}}
+          </p>
+        </div>
+        <div class="col-sm-6">
+          <p ng-if="vm.user.website">
+            <b>Website: </b> <a href="http://{{vm.user.website}}" target="_blank">{{vm.user.website}}</a>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <p ng-if="vm.user.location">
+            <b>Location: </b> </br><a target="_blank" href="http://maps.google.com/?q={{vm.user.location}}">{{vm.user.location}}</a>
+          </p>
+        </div>
+      </div>
+      <label>Customer Contact Information</label>
+      <div class="panel panel-default" style="padding: 10px; background-color: #d3d3d3 ">
+        <div class="row">
+          <div class="col-sm-4">
+            <p ng-if="vm.user.ninja_firstname">
+              <b>First Name: </b></br>
+              {{vm.user.ninja_firstname}}
+            </p>
+          </div>
+          <div class="col-sm-4">
+            <p ng-if="vm.user.ninja_lastname">
+              <b>Last Name: </b></br> {{vm.user.ninja_lastname}}
+            </p>
+          </div>
+          <div class="col-sm-4">
+            <p ng-if="vm.user.ninja_email">
+              <b>Email: </b></br> {{vm.user.ninja_email}}
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <p ng-if="vm.user.ninja_phone">
+              <b>Contact Phone: </b></br>
+              {{vm.user.ninja_phone}}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <p ng-if="vm.user.minprice">
+            <b>Min Price per person: </b> {{vm.user.minprice}}
+          </p>
+        </div>
+        <div class="col-sm-4">
+          <p ng-if="vm.user.veganOffers">
+            <b>Have vegetarian offers: </b> {{vm.user.veganOffers}}
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <b>Food types</b>
+        </div>
+        <div class="col-sm-4">
+          <b>Service types</b>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <div style="border: 3px solid transparent; padding-left: 10px; border-radius: 4px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); border-color: #ddd;">
+            <p ng-if="vm.user.foodTypes">
+                <p ng-repeat="type in foodTypes" ng-if="vm.checkFT(type._id)">
+                  {{type.name}}
+                </p>
+            </p>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div style="border: 3px solid transparent; padding-left: 10px; border-radius: 4px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); border-color: #ddd;">
+            <p ng-if="vm.user.serviceTypes">
+                <p ng-repeat="type in serviceTypes" ng-if="vm.checkST(type._id)">
+                  {{type.name}}
+                </p>
+
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
